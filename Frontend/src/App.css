@@ -1,0 +1,160 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+@import "tailwindcss";
+
+/* ---- COLORS ---- */
+@theme static {
+	--color-claret-50: #fef2f5;
+	--color-claret-100: #fde6ec;
+	--color-claret-200: #facdd9;
+	--color-claret-300: #f5a5ba;
+	--color-claret-400: #ea6e91;
+	--color-claret-500: #d9406b;
+	--color-claret-600: #941c3f;
+	--color-claret-700: #6f142f;
+	--color-claret-800: #541028;
+	--color-claret-900: #3f0d21;
+
+	--color-blue-50: #f3f6fb;
+	--color-blue-100: #e0e8f5;
+	--color-blue-200: #b9c8e6;
+	--color-blue-300: #91a7d6;
+	--color-blue-400: #6886c5;
+	--color-blue-500: #4d6db0;
+	--color-blue-600: #3b568f;
+	--color-blue-700: #2c406c;
+	--color-blue-800: #1d2c4a;
+	--color-blue-900: #111b2d;
+
+	--color-green-50: #f4f8f6;
+	--color-green-100: #dbeee6;
+	--color-green-200: #b1dac9;
+	--color-green-300: #84c5a9;
+	--color-green-400: #56ac8b;
+	--color-green-500: #3b9374;
+	--color-green-600: #2d735c;
+	--color-green-700: #22594a;
+	--color-green-800: #17403a;
+	--color-green-900: #0e2a29;
+
+	--color-yellow-50: #fffcf5;
+	--color-yellow-100: #fff3d4;
+	--color-yellow-200: #ffe29a;
+	--color-yellow-300: #ffd164;
+	--color-yellow-400: #fcb830;
+	--color-yellow-500: #dea311;
+	--color-yellow-600: #b7830c;
+	--color-yellow-700: #8e6408;
+	--color-yellow-800: #684905;
+	--color-yellow-900: #443104;
+
+	--color-orange-50: #fff8f2;
+	--color-orange-100: #ffecd9;
+	--color-orange-200: #ffd0a8;
+	--color-orange-300: #f9b474;
+	--color-orange-400: #ea8e42;
+	--color-orange-500: #cd6b26;
+	--color-orange-600: #a4531d;
+	--color-orange-700: #7c3d14;
+	--color-orange-800: #56290d;
+	--color-orange-900: #351709;
+
+	--color-red-50: #fff5f5;
+	--color-red-100: #ffe3e3;
+	--color-red-200: #ffbdbd;
+	--color-red-300: #ff9999;
+	--color-red-400: #f36b6b;
+	--color-red-500: #dc4c4c;
+	--color-red-600: #b33232;
+	--color-red-700: #8d2323;
+	--color-red-800: #661616;
+	--color-red-900: #3f0b0b;
+
+	--color-grey-50: #f9fafb;
+	--color-grey-100: #f3f4f6;
+	--color-grey-200: #e5e7eb;
+	--color-grey-300: #d1d5db;
+	--color-grey-400: #9ca3af;
+	--color-grey-500: #6b7280;
+	--color-grey-600: #4b5563;
+	--color-grey-700: #374151;
+	--color-grey-800: #1f2937;
+	--color-grey-900: #111827;
+
+	--text-sm: clamp(0.7502rem, 0.8623rem + -0.1446vw, 0.8333rem);
+	--text-base: clamp(1rem, 1rem + 0vw, 1rem);
+	--text-md: clamp(1.2rem, 1.1537rem + 0.2313vw, 1.333rem);
+	--text-xl: clamp(1.44rem, 1.3228rem + 0.5859vw, 1.7769rem);
+	--text-2xl: clamp(1.728rem, 1.5052rem + 1.1141vw, 2.3686rem);
+	--text-3xl: clamp(2.0736rem, 1.6966rem + 1.8848vw, 3.1573rem);
+	--text-4xl: clamp(2.4883rem, 1.8899rem + 2.992vw, 4.2087rem);
+}
+@layer base {
+	* {
+		box-sizing: border-box;
+	}
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: "Quicksand", sans-serif;
+		font-optical-sizing: auto;
+		font-weight: 400;
+		font-style: normal;
+		font-size: 16px;
+		color: var(--color-grey-800);
+	}
+}
+
+@layer components {
+	:is(h1, h2, h3, h4, h5, h6) {
+		font-family: "Quicksand", sans-serif;
+		line-height: 1.2em;
+		font-weight: 600;
+		color: var(--color-black);
+		margin: 0;
+	}
+	h1 {
+		font-size: var(--text-2xl);
+	}
+	h2 {
+		font-size: var(--text-xl);
+	}
+	h3 {
+		font-size: var(--text-lg);
+	}
+	h4 {
+		font-size: var(--text-md);
+	}
+	h5 {
+		font-size: var(--text-base);
+		text-transform: uppercase;
+		font-weight: 800;
+	}
+	h6 {
+		font-size: var(--text-sm);
+		text-transform: uppercase;
+		font-weight: 800;
+	}
+
+	:is(p, li, button, label, input) {
+		font-family: "Quicksand", sans-serif;
+		font-optical-sizing: auto;
+		font-weight: 400;
+		font-style: normal;
+		font-size: var(--text-base);
+		line-height: 1.4em;
+	}
+
+	:is(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6) {
+		margin-top: 5px;
+	}
+	:is(h1, h2, h3, h4, h5, h6) + :is(p, ul, ol) {
+		margin-top: 20px;
+	}
+	:is(p, ul, ol) + :is(h1, h2, h3, h4, h5, h6) {
+		margin-top: 40px;
+	}
+	:is(p, ul, ol) : is:(p, ul, ol) {
+		margin-top: 10px;
+	}
+}
