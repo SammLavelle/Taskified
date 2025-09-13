@@ -17,6 +17,7 @@ public class GetTasksResponse
     public int TaskId { get; set; }
     public string Name { get; set; }
     public bool IsCompleted { get; set; }
+    public string? DueDate { get; set; }
 }
 
 public class GetTasksEndpoint : Endpoint<GetTasksRequest, PaginatedList<GetTasksResponse>>
@@ -47,7 +48,10 @@ public class GetTasksEndpoint : Endpoint<GetTasksRequest, PaginatedList<GetTasks
             {
                 TaskId = x.TaskId,
                 Name = x.Name,
-                IsCompleted = x.IsCompleted
+                IsCompleted = x.IsCompleted,
+                DueDate = x.DueDate.HasValue
+                    ? DateTime.SpecifyKind(x.DueDate.Value, DateTimeKind.Utc).ToString("o")
+                    : null
             })
             .ToListAsync(cancellationToken);
 

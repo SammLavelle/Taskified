@@ -3,6 +3,11 @@ import { useState, useRef, useContext } from "react";
 import postNewTask from "../../api/postNewTask";
 import { NotificationContext } from "../../context";
 
+export interface NewTask {
+	name: string;
+	dueDate: string | null;
+}
+
 export const useAddTaskForm = () => {
 	const [errors, setErrors] = useState<string>("");
 	const [_, setNotification] = useContext(NotificationContext);
@@ -10,11 +15,11 @@ export const useAddTaskForm = () => {
 	const queryClient = useQueryClient();
 
 	const addTaskMutation = useMutation({
-		mutationFn: (name: string) => postNewTask(name),
+		mutationFn: (task: NewTask) => postNewTask(task),
 		onError: (error) => {
 			setErrors(error.message);
 		},
-		onSuccess: (newTask) => {
+		onSuccess: () => {
 			setNotification((prev) => [...prev, "Successfully added task"]);
 			setErrors("");
 			formRef.current?.reset();
@@ -39,9 +44,21 @@ export const useAddTaskForm = () => {
 			return;
 		}
 
+		const dueDateRaw = formData.get("dueDate");
+		const dueDate = dueDateRaw
+			? new Date(dueDateRaw as string).toISOString()
+			: null;
+
+		console.log("isoed " + dueDate);
+
+		const task: NewTask = {
+			name,
+			dueDate,
+		};
+
 		setErrors("");
 
-		addTaskMutation.mutate(name);
+		addTaskMutation.mutate(task);
 	};
 
 	return {

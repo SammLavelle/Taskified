@@ -8,12 +8,14 @@ namespace Tasks.Endpoints;
 public class CreateTaskRequest
 {
     public string Name { get; set; }
+    public DateTime? DueDate { get; set; }
 }
 
 public class CreateTaskResponse
 {
     public int TaskId { get; set; }
     public string Name { get; set; }
+    public string? DueDate { get; set; }
 }
 
 public class CreateTaskEndpoint : Endpoint<CreateTaskRequest, CreateTaskResponse>
@@ -33,10 +35,22 @@ public class CreateTaskEndpoint : Endpoint<CreateTaskRequest, CreateTaskResponse
 
     public override async Task HandleAsync(CreateTaskRequest request, CancellationToken cancellationToken)
     {
-        //Right so by using the event bus stuff, we can handle just the creating of the task here and move all the side effects somewhere else?
+        DateTime? dueDateUtc = null;
+
+        if (request.DueDate.HasValue)
+        {
+            var dueDate = request.DueDate.Value;
+
+            if (dueDate.Kind == DateTimeKind.Unspecified)
+                dueDate = DateTime.SpecifyKind(dueDate, DateTimeKind.Local);
+
+            dueDateUtc = dueDate.ToUniversalTime();
+        }
+        
         var task = new TaskItem
         {
             Name = request.Name,
+            DueDate = dueDateUtc,
             IsCompleted = false,
         };
         
@@ -47,12 +61,16 @@ public class CreateTaskEndpoint : Endpoint<CreateTaskRequest, CreateTaskResponse
         {
             TaskId = task.TaskId,
             Name = task.Name,
+            DueDate = task.DueDate,
         });
 
         await Send.OkAsync(new()
         {
             TaskId = task.TaskId,
             Name = task.Name,
+            DueDate = task.DueDate.HasValue 
+                ? task.DueDate.Value.ToUniversalTime().ToString("o") 
+                : null,
         });
     }
 }

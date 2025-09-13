@@ -8,4 +8,5 @@ public class TaskItem
     public int TaskId { get; set; }
     public string Name { get; set; }
     public bool IsCompleted { get; set; }
+    public DateTime? DueDate { get; set; }
 }

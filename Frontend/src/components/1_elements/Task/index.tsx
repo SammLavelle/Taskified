@@ -2,9 +2,17 @@ export interface taskProps {
 	taskId: number;
 	name: string;
 	isComplete: boolean;
+	dueDate?: Date;
 }
 
-const Task = ({ taskId, name, isComplete }: taskProps) => {
+const Task = ({ taskId, name, isComplete, dueDate }: taskProps) => {
+	if (dueDate) {
+		const dueDateData = new Date(dueDate);
+		console.log(dueDateData.toString()); // Should show local time string
+		console.log(dueDateData.toISOString()); // Always UTC string
+		console.log(dueDateData.toLocaleString());
+	}
+
 	return (
 		<div
 			key={taskId}
@@ -13,6 +21,11 @@ const Task = ({ taskId, name, isComplete }: taskProps) => {
 			<label className="flex gap-1 items-center">
 				<input type="checkbox" />
 				{name}
+				{dueDate && (
+					<span className="italic">
+						{new Date(dueDate).toLocaleString()}
+					</span>
+				)}
 			</label>
 		</div>
 	);

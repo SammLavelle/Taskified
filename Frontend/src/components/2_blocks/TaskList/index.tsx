@@ -31,6 +31,7 @@ const TaskList = () => {
 						taskId={task.taskId}
 						name={task.name}
 						isComplete={task.isComplete}
+						dueDate={task.dueDate}
 					/>
 				))}
 			</div>

@@ -23,6 +23,7 @@ const AddTaskForm = () => {
 					placeholder="Important thing..."
 					required
 				/>
+				<Input label="Due date" name="dueDate" type="datetime-local" />
 				<Button
 					type="submit"
 					className="w-full"
