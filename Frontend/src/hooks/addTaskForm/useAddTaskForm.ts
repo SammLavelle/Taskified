@@ -18,9 +18,13 @@ export const useAddTaskForm = () => {
 			setNotification((prev) => [...prev, "Successfully added task"]);
 			setErrors("");
 			formRef.current?.reset();
-			queryClient.setQueryData(["fetchTasks"], (tasks: any) => {
-				return [...tasks, newTask];
-			});
+			//TODO - see if I can make this work somehow to reduce api calls.
+			// queryClient.setQueryData(["fetchTasks"], (tasks: any) => {
+			// 	return [...tasks, newTask];
+			// });
+
+			//FOR NOW - I'm switching to invalidate query to uncomplicate the paginated tasks query
+			queryClient.invalidateQueries({ queryKey: ["fetchTasks"] });
 		},
 	});
 

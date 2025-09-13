@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import TaskifyLogo from "../../../assets/TaskifyLogo";
 import Notification from "../../1_elements/Notification";
+import TaskifyLogo from "../../../assets/logos/TaskifyLogo";
 
 const SidebarNav = () => {
 	return (

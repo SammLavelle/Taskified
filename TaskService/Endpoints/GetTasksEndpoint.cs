@@ -2,8 +2,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Tasks.Models;
+using Tasks.Utils;
 
 namespace Tasks.Endpoints;
+
+public class GetTasksRequest
+{
+    [QueryParam]
+    public int PageNumber { get; set; } = 1;
+}
 
 public class GetTasksResponse
 {
@@ -12,7 +19,7 @@ public class GetTasksResponse
     public bool IsCompleted { get; set; }
 }
 
-public class GetTasksEndpoint : EndpointWithoutRequest<List<GetTasksResponse>>
+public class GetTasksEndpoint : Endpoint<GetTasksRequest, PaginatedList<GetTasksResponse>>
 {
     private readonly TasksDbContext _dbContext;
 
@@ -27,9 +34,15 @@ public class GetTasksEndpoint : EndpointWithoutRequest<List<GetTasksResponse>>
         AllowAnonymous();
     }
     
-    public override async Task<List<GetTasksResponse>> ExecuteAsync(CancellationToken cancellationToken)
+    public override async Task<PaginatedList<GetTasksResponse>> ExecuteAsync(GetTasksRequest request, CancellationToken cancellationToken)
     {
+        var pageNumber = request.PageNumber;
+        var pageSize = 10;
+        var totalCount = await _dbContext.Tasks.CountAsync(cancellationToken);
+        
         var tasks = await _dbContext.Tasks
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .Select(x => new GetTasksResponse
             {
                 TaskId = x.TaskId,
@@ -38,6 +51,8 @@ public class GetTasksEndpoint : EndpointWithoutRequest<List<GetTasksResponse>>
             })
             .ToListAsync(cancellationToken);
 
-        return tasks;
+        var paginatedTasks = new PaginatedList<GetTasksResponse>(tasks, pageNumber, pageSize, totalCount);
+
+        return paginatedTasks;
     }
 }
