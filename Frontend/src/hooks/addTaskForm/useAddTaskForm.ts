@@ -49,8 +49,6 @@ export const useAddTaskForm = () => {
 			? new Date(dueDateRaw as string).toISOString()
 			: null;
 
-		console.log("isoed " + dueDate);
-
 		const task: NewTask = {
 			name,
 			dueDate,
