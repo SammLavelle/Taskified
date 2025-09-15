@@ -1,5 +1,5 @@
-﻿using FastEndpoints;
-using Microsoft.AspNetCore.Mvc;
+﻿using Contracts.Events;
+using FastEndpoints;
 using Tasks.Events;
 using Tasks.Models;
 
@@ -21,10 +21,12 @@ public class CreateTaskResponse
 public class CreateTaskEndpoint : Endpoint<CreateTaskRequest, CreateTaskResponse>
 {
     private readonly TasksDbContext _dbContext;
+    private readonly TaskCreatedEventPublisher _publisher;
 
-    public CreateTaskEndpoint(TasksDbContext dbContext)
+    public CreateTaskEndpoint(TasksDbContext dbContext, TaskCreatedEventPublisher publisher)
     {
         _dbContext = dbContext;
+        _publisher = publisher;
     }
 
     public override void Configure()
@@ -56,12 +58,11 @@ public class CreateTaskEndpoint : Endpoint<CreateTaskRequest, CreateTaskResponse
         
         _dbContext.Tasks.Add(task);
         await _dbContext.SaveChangesAsync(cancellationToken);
-
-        await PublishAsync(new TaskCreatedEvent
+        
+        _publisher.PublishTaskCreated( new TaskCreatedEvent
         {
             TaskId = task.TaskId,
             Name = task.Name,
-            DueDate = task.DueDate,
         });
 
         await Send.OkAsync(new()
@@ -69,7 +70,7 @@ public class CreateTaskEndpoint : Endpoint<CreateTaskRequest, CreateTaskResponse
             TaskId = task.TaskId,
             Name = task.Name,
             DueDate = task.DueDate.HasValue 
-                ? task.DueDate.Value.ToUniversalTime().ToString("o") 
+                ? task.DueDate.Value.ToUniversalTime().ToString("o") //FE needs to be told this is universal time
                 : null,
         });
     }
